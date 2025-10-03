@@ -8,10 +8,15 @@ import os
 load_dotenv()
 
 PINECONE_API_KEY = os.environ.get("PINECONE_API_KEY")
+OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY")
 os.environ["PINECONE_API_KEY"] = PINECONE_API_KEY
+os.environ["OPENAI_API_KEY"] = OPENAI_API_KEY
 
 extracted_data = load_pdf_file(data='Data/')
 text_chunks = text_splitter(extracted_data)
+
+embeddings = download_hugging_face_embeddings()
+
 pc = Pinecone(api_key="pcsk_7MgPhr_NUGymS6R54idzTjgZP5UnU3V3nXA8Ngq9s1mwpgqoKgPm9puFGF3K2FktnPwUe8")
 
 index_name = "medical-chatbot"
