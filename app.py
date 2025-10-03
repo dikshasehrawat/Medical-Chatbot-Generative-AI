@@ -14,6 +14,9 @@ app=Flask(__name__)
 PINECONE_API_KEY = os.environ.get("PINECONE_API_KEY")
 OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY")
 
+os.environ["PINECONE_API_KEY"]= "pcsk_7MgPhr_NUGymS6R54idzTjgZP5UnU3V3nXA8Ngq9s1mwpgqoKgPm9puFGF3K2FktnPwUe8"
+os.environ["OPENAI_API_KEY"]= "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"
+
 embeddings = download_hugging_face_embeddings()
 
 index_name = "medical-chatbot"
