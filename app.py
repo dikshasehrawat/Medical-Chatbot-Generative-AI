@@ -8,6 +8,7 @@ from langchain_core.prompts import ChatPromptTemplate
 from dotenv import load_dotenv
 from src.prompt import *
 import os
+from openai.error import RateLimitError
 
 app=Flask(__name__)
 
@@ -38,9 +39,23 @@ prompt=ChatPromptTemplate.from_messages(
 question_answer_chain = create_stuff_documents_chain(llm, prompt)
 rag_chain = create_retrieval_chain(retriever, question_answer_chain )
 
-@app.route("/")
+@app.route("/", methods=["GET", "POST"])
 def index():
-    return render_template("chat.html")
+    user_msg = ""
+    bot_response = ""
+
+    if request.method == "POST":
+        user_msg = request.form.get("msg", "")
+        if user_msg:
+            try:
+                result = rag_chain.invoke({"input": user_msg})
+                bot_response = result["answer"]
+            except RateLimitError:
+                bot_response = "⚠️ You've hit the OpenAI rate limit. Please wait a bit and try again."
+            except Exception as e:
+                bot_response = f"❌ Error: {str(e)}"
+
+    return render_template("chat.html", user_msg=user_msg, bot_response=bot_response)
 
 @app.route("/get", methods=["GET", "POST"])
 def chat():
