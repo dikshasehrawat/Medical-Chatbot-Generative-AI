@@ -8,7 +8,7 @@ from langchain_core.prompts import ChatPromptTemplate
 from dotenv import load_dotenv
 from src.prompt import *
 import os
-from openai.error import RateLimitError
+
 
 app=Flask(__name__)
 
@@ -50,12 +50,15 @@ def index():
             try:
                 result = rag_chain.invoke({"input": user_msg})
                 bot_response = result["answer"]
-            except RateLimitError:
-                bot_response = "⚠️ You've hit the OpenAI rate limit. Please wait a bit and try again."
             except Exception as e:
-                bot_response = f"❌ Error: {str(e)}"
+                error_message = str(e)
+                if "RateLimitError" in error_message or "429" in error_message:
+                    bot_response = "⚠️ You've hit the OpenAI rate limit. Please wait a bit and try again."
+                else:
+                    bot_response = f"❌ Error: {error_message}"
 
     return render_template("chat.html", user_msg=user_msg, bot_response=bot_response)
+
 
 @app.route("/get", methods=["GET", "POST"])
 def chat():
