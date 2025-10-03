@@ -2,13 +2,15 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>MedBot - AI Health Assistant</title>
+  <title>MediBot AI - Your Health Assistant</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
   <div class="chat-container">
     <header>
-      <h1>🩺 MedBot - AI Health Assistant</h1>
+      <div class="logo">🧬</div>
+      <h1>MediBot AI</h1>
+      <p class="tagline">Your AI companion for health questions</p>
     </header>
 
     <div class="chat-window">
@@ -18,8 +20,8 @@
     </div>
 
     <form method="POST">
-      <input type="text" name="user_input" placeholder="Type your medical question..." required>
-      <button type="submit">Send</button>
+      <input type="text" name="user_input" placeholder="Describe your symptoms or ask a question..." required>
+      <button type="submit">➤</button>
     </form>
   </div>
 </body>
