@@ -1,29 +1,49 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>MediBot AI - Your Health Assistant</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>MediBot AI - Your Medical Assistant</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet" />
 </head>
 <body>
-  <div class="chat-container">
+  <div class="container">
     <header>
-      <div class="logo"><h1>🧬 MediBot AI</h1></div>
-      <p class="tagline">Your AI companion for health questions</p>
+      <div class="logo">🧬 MediBot AI 🧬</div>
+      <p>Your AI-Powered Medical Assistant</p>
     </header>
 
-    <div class="chat-window">
-      {% for sender, message in messages %}
-        <div class="message {{ sender }}">{{ message }}</div>
-      {% endfor %}
-    </div>
+    <main class="chat-box">
+      {% if user_msg %}
+        <div class="chat-message user-message">
+          <div class="avatar user-avatar">👤</div>
+          <div class="message-content">{{ user_msg }}</div>
+        </div>
+      {% endif %}
 
-    
-    <form action="/get" method="POST">
-    <input type="text" name="msg" placeholder="Ask your medical question..." required />
-    <button type="submit">➤</button>
+      {% if bot_response %}
+        <div class="chat-message bot-message">
+          <div class="avatar bot-avatar">🤖</div>
+          <div class="message-content">{{ bot_response }}</div>
+        </div>
+      {% endif %}
+    </main>
+
+    <form method="POST" class="chat-form">
+      <input
+        type="text"
+        name="msg"
+        placeholder="Ask me anything about your health..."
+        required
+        autocomplete="off"
+      />
+      <button type="submit">Send</button>
     </form>
 
+    <footer>
+      <small>© 2025 MediBot AI. All rights reserved.</small>
+    </footer>
   </div>
 </body>
 </html>
