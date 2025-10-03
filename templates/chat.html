@@ -18,10 +18,12 @@
       {% endfor %}
     </div>
 
-    <form method="POST">
-      <input type="text" name="user_input" placeholder="Describe your symptoms or ask a question..." required>
-      <button type="submit">➤</button>
+    
+    <form action="/get" method="POST">
+    <input type="text" name="msg" placeholder="Ask your medical question..." required />
+    <button type="submit">➤</button>
     </form>
+
   </div>
 </body>
 </html>
