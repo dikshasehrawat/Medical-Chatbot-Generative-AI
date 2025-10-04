@@ -1,0 +1,74 @@
+from flask import Flask, render_template, jsonify, request
+from src.helper import download_hugging_face_embeddings
+from langchain_pinecone import PineconeVectorStore
+from langchain_openai import OpenAI
+from langchain.chains import create_retrieval_chain
+from langchain.chains.combine_documents import create_stuff_documents_chain
+from langchain_core.prompts import ChatPromptTemplate
+from dotenv import load_dotenv
+from src.prompt import *
+import os
+
+
+app=Flask(__name__)
+
+PINECONE_API_KEY = os.environ.get("PINECONE_API_KEY")
+OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY")
+
+os.environ["PINECONE_API_KEY"]= "pcsk_7MgPhr_NUGymS6R54idzTjgZP5UnU3V3nXA8Ngq9s1mwpgqoKgPm9puFGF3K2FktnPwUe8"
+os.environ["OPENAI_API_KEY"]= "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"
+
+embeddings = download_hugging_face_embeddings()
+
+index_name = "medical-chatbot"
+docsearch = PineconeVectorStore.from_existing_index(
+    index_name=index_name,
+    embedding=embeddings
+)
+
+retriever = docsearch.as_retriever(search_type="similarity", search_kwargs={"k":3})
+
+llm = OpenAI(temperature=0.4, max_tokens=500)
+prompt=ChatPromptTemplate.from_messages(
+    [
+        ("system", system_prompt),
+        ("user", "{input}"),
+    ]
+)
+
+question_answer_chain = create_stuff_documents_chain(llm, prompt)
+rag_chain = create_retrieval_chain(retriever, question_answer_chain )
+
+@app.route("/", methods=["GET", "POST"])
+def index():
+    user_msg = ""
+    bot_response = ""
+
+    if request.method == "POST":
+        user_msg = request.form.get("msg", "")
+        if user_msg:
+            try:
+                result = rag_chain.invoke({"input": user_msg})
+                bot_response = result["answer"]
+            except Exception as e:
+                error_message = str(e)
+                if "RateLimitError" in error_message or "429" in error_message:
+                    bot_response = "⚠️ You've hit the OpenAI rate limit. Please wait a bit and try again."
+                else:
+                    bot_response = f"❌ Error: {error_message}"
+
+    return render_template("chat.html", user_msg=user_msg, bot_response=bot_response)
+
+
+@app.route("/get", methods=["GET", "POST"])
+def chat():
+    msg=request.form["msg"]
+    input=msg
+    print(input)
+    response = rag_chain.invoke({"input": msg})
+    print("Response: ", response["answer"])
+    return str(response["answer"])
+
+
+if __name__=='__main__':
+    app.run(host="0.0.0.0", port=8080, debug=True)

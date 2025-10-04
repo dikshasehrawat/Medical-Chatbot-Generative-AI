@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>MediBot AI - Your Medical Assistant</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet" />
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="logo">🧬 MediBot AI 🧬</div>
+      <p>Your AI-Powered Medical Assistant</p>
+    </header>
+
+    <main class="chat-box">
+      {% if user_msg %}
+        <div class="chat-message user-message">
+          <div class="avatar user-avatar">👤</div>
+          <div class="message-content">{{ user_msg }}</div>
+        </div>
+      {% endif %}
+
+      {% if bot_response %}
+        <div class="chat-message bot-message">
+          <div class="avatar bot-avatar">🤖</div>
+          <div class="message-content">{{ bot_response }}</div>
+        </div>
+      {% endif %}
+    </main>
+
+    <form method="POST" class="chat-form">
+      <input
+        type="text"
+        name="msg"
+        placeholder="Ask me anything about your health..."
+        required
+        autocomplete="off"
+      />
+      <button type="submit">➤</button>
+    </form>
+
+    <footer>
+      <small>© 2025 MediBot AI. All rights reserved.</small>
+    </footer>
+  </div>
+</body>
+</html>
