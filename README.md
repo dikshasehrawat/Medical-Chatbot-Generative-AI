@@ -45,23 +45,23 @@ The chatbot retrieves relevant information from medical documents and generates 
 git clone https://github.com/dikshasehrawat/Medical-Chatbot-Generative-AI.git
 cd Medical-Chatbot-Generative-AI
 ```
-###2️⃣ Create a Virtual Environment
+### 2️⃣ Create a Virtual Environment
 ```bash
 conda create -n medibot python=3.10 -y
 conda activate medibot
 ```
-###3️⃣ Install Dependencies
+### 3️⃣ Install Dependencies
 ```bash
 pip install -r requirements.txt
 ```
-###🔑 Environment Variables
+### 🔑 Environment Variables
 
 Create a .env file in the root directory and add the following:
 ```bash
 PINECONE_API_KEY=your_pinecone_api_key
 OPENAI_API_KEY=your_openai_api_key
 ```
-###▶️ Run the Application
+### ▶️ Run the Application
 
 Run the following commands:
 ```bash
@@ -72,7 +72,7 @@ Then open the application in your browser:
 ```bash
 http://localhost:5000
 ```
-###📂 Project Structure
+### 📂 Project Structure
 ```bash
 Medical-Chatbot-Generative-AI
 │
@@ -85,7 +85,7 @@ Medical-Chatbot-Generative-AI
 ├── requirements.txt     # Dependencies
 └── README.md
 ```
-###🎯 Future Improvements
+### 🎯 Future Improvements
 
 Add voice-based medical assistant
 
@@ -97,5 +97,5 @@ Deploy using Docker + Cloud services
 
 Integrate authentication and chat history
 
-⚠️ Disclaimer
+### ⚠️ Disclaimer
 This chatbot is intended for educational and informational purposes only and should not replace professional medical advice.
