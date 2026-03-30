@@ -1,4 +1,4 @@
-# 🏥 Medical Chatbot – Generative AI
+# 🏥 Medibot
 
 An AI-powered medical chatbot that answers health-related queries using **Generative AI and Retrieval-Augmented Generation (RAG)**.  
 The chatbot retrieves relevant information from medical documents and generates contextual responses to assist users with healthcare-related questions.
